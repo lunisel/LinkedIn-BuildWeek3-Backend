@@ -17,7 +17,7 @@ experiencesRouter
         "username"
       );
       if (profile) {
-        res.send(profile.experiences);
+        res.send(profile);
       } else {
         next(
           createError(404, `Profile with id: ${req.params.userId} not found`)
