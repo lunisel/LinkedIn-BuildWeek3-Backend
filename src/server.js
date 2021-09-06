@@ -3,6 +3,7 @@ import cors from "cors";
 import listEndpoints from "express-list-endpoints";
 import mongoose from "mongoose";
 import userRouter from "./services/user/index.js";
+import postRouter from "./services/posts/index.js";
 
 const port = process.env.PORT || 3000;
 const mongoConnection = process.env.MONGO_CONNECTION_STRING;
@@ -13,6 +14,7 @@ server.use(cors());
 server.use(express.json());
 
 server.use("/profile", userRouter);
+server.use("/posts", postRouter);
 
 mongoose.connect(mongoConnection);
 
