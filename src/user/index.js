@@ -56,4 +56,17 @@ userRouter.put("/:id", async (req, resp, next) => {
   }
 });
 
+userRouter.delete("/:id", async (req, resp, next) => {
+  try {
+    const user = await UserModel.findByIdAndDelete(req.params.id);
+    if (user) {
+      resp.status(204).send();
+    } else {
+      next(createError(404, `User with id ${req.params.id} not found!`));
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default userRouter;
