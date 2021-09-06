@@ -9,6 +9,8 @@ import {
   catchAllErrorHandler,
 } from "./errorMiddlewares.js";
 
+import postRouter from "./services/Posts/index.js";
+
 const port = process.env.PORT || 3000;
 const mongoConnection = process.env.MONGO_CONNECTION_STRING;
 
@@ -19,6 +21,7 @@ server.use(express.json());
 
 // ****************** ROUTES ***********************
 server.use("/profile", userRouter);
+server.use("/posts", postRouter);
 
 // ****************** ERROR HANDLERS ***********************
 server.use(badRequestErrorHandler);
