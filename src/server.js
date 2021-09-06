@@ -3,6 +3,7 @@ import cors from "cors";
 import listEndpoints from "express-list-endpoints";
 import mongoose from "mongoose";
 
+import { notFoundErrorHandler, badRequestErrorHandler, catchAllErrorHandler } from "./errorMiddlewares.js";
 const port = process.env.PORT || 3000;
 const mongoConnection = process.env.MONGO_CONNECTION_STRING;
 
@@ -10,6 +11,13 @@ const server = express();
 
 server.use(cors());
 server.use(express.json());
+
+
+
+// ****************** ERROR HANDLERS ***********************
+server.use(badRequestErrorHandler)
+server.use(notFoundErrorHandler)
+server.use(catchAllErrorHandler)
 
 mongoose.connect(mongoConnection);
 
