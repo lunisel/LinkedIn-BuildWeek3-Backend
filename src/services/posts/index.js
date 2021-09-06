@@ -1,15 +1,15 @@
 import express from "express";
-import PostModel from "./schema.js";
+import postModel from "./schema.js";
 import multer from "multer"
 import { mediaStorage } from "../../utils/mediaStorage.js"
 
-const postRouter = express.Router();
+const PostRouter = express.Router();
 
 // Replace post image
-postRouter.post("/:postId", multer({ storage: mediaStorage }).single("image"), async(req,res,next) => { 
+PostRouter.post("/:postId", multer({ storage: mediaStorage }).single("image"), async(req,res,next) => { 
     try {
       console.log("TRYING TO POST POST PICTURE")
-      const modifiedPost = await PostModel.findByIdAndUpdate(req.params.postId, {image: req.file.path}, {
+      const modifiedPost = await postModel.findByIdAndUpdate(req.params.postId, {image: req.file.path}, {
         new: true
       })
       if (modifiedPost) {
@@ -22,4 +22,4 @@ postRouter.post("/:postId", multer({ storage: mediaStorage }).single("image"), a
     }
 })
 
-export default postRouter
+export default PostRouter
