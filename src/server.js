@@ -35,10 +35,10 @@ mongoose.connection.on("connected", () => {
   console.log("Successfully connected to mongo!");
   server.listen(port, () => {
     console.table(listEndpoints(server));
-    console.log("Server is running on port ", port);
+    console.log("Server is running on port", port);
   });
 });
 
 mongoose.connection.on("error", (err) => {
-  console.log("MONGO ERROR: ", err);
+  console.log("MONGO ERROR:", err);
 });

@@ -1,5 +1,7 @@
 import express from "express";
 import UserModel from "./schema.js";
+import multer from "multer";
+import { mediaStorage } from "../../utils/mediaStorage.js";
 
 const userRouter = express.Router();
 
@@ -68,5 +70,31 @@ userRouter.delete("/:id", async (req, resp, next) => {
     next(err);
   }
 });
+
+userRouter.post(
+  "/:userId/picture",
+  multer({ storage: mediaStorage }).single("image"),
+  async (req, res, next) => {
+    try {
+      console.log("TRYING TO POST PROFILE PICTURE");
+      const modifiedUser = await UserModel.findByIdAndUpdate(
+        req.params.userId,
+        { image: req.file.path },
+        {
+          new: true,
+        }
+      );
+      if (modifiedUser) {
+        res.send(modifiedUser);
+      } else {
+        next(
+          createError(404, `Profile with id ${req.params.userId} not found!`)
+        );
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export default userRouter;
