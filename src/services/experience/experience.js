@@ -13,7 +13,9 @@ experiencesRouter
   .route("/:userId/experiences")
   .get(async (req, res, next) => {
     try {
-      const profile = await UserModel.findById(req.params.userId);
+      const profile = await UserModel.findById(req.params.userId).populate(
+        "username"
+      );
       if (profile) {
         res.send(profile.experiences);
       } else {
