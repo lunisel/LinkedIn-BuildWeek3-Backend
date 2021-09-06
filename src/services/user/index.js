@@ -2,6 +2,8 @@ import express from "express";
 import UserModel from "./schema.js";
 import multer from "multer";
 import { mediaStorage } from "../../utils/mediaStorage.js";
+import { getPDFReadableStream } from "../../utils/pdf.js";
+import { pipeline } from "stream";
 
 const userRouter = express.Router();
 
@@ -96,5 +98,20 @@ userRouter.post(
     }
   }
 );
+
+userRouter.get("/:id/CV", async (req, res, next) => {
+    try {
+      const user = await UserModel.findById(req.params.id);
+      const filename = "CV.pdf"
+      res.setHeader("Content-Disposition", `attachment; filename=${filename}`) // tells browser to open SAVE-AS dialogue
+      const source = getPDFReadableStream(user) 
+      const destination = res
+      pipeline(source, destination, err => {
+        if (err) next(err)
+      })
+    } catch (error) {
+        next(error)
+    }
+})
 
 export default userRouter;
