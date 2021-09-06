@@ -23,4 +23,37 @@ userRouter.post("/", async (req, resp, next) => {
   }
 });
 
+userRouter.get("/:id", async (req, resp, next) => {
+  try {
+    const user = await UserModel.findById(req.params.id);
+    if (user) {
+      resp.send(user);
+    } else {
+      next(createError(404, `User with id ${req.params.id} not found!`));
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+userRouter.put("/:id", async (req, resp, next) => {
+  try {
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    if (updatedUser) {
+      resp.send(updatedUser);
+    } else {
+      next(createError(404, `User with id ${req.params.id} not found!`));
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default userRouter;
