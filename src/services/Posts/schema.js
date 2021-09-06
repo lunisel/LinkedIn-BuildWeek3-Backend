@@ -1,41 +1,6 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const userSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: [true, "Name is requered"],
-    },
-    surname: {
-      type: String,
-      required: [true, "Surname is requered"],
-    },
-    email: {
-      type: String,
-      required: [true, "Email is requered"],
-    },
-    bio: {
-      type: String,
-    },
-    title: {
-      type: String,
-    },
-    area: {
-      type: String,
-    },
-    image: {
-      type: String,
-    },
-    username: {
-      type: String,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
-
 const postSchema = new Schema(
   {
     text: {
@@ -46,7 +11,7 @@ const postSchema = new Schema(
       type: String,
     },
 
-    user: [userSchema],
+    user: { type: Schema.Types.ObjectId, ref: "User" },
     image: {
       type: String,
     },
