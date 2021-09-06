@@ -5,15 +5,15 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, "Name is requered"],
+      // required: [true, "Name is requered"],
     },
     surname: {
       type: String,
-      required: [true, "Surname is requered"],
+      // required: [true, "Surname is requered"],
     },
     email: {
       type: String,
-      required: [true, "Email is requered"],
+      // required: [true, "Email is requered"],
     },
     bio: {
       type: String,
