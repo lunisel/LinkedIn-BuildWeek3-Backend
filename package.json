@@ -30,6 +30,7 @@
     "multer": "^1.4.3",
     "multer-storage-cloudinary": "^4.0.0",
     "nodemon": "^2.0.12",
-    "query-to-mongo": "^0.10.1"
+    "query-to-mongo": "^0.10.1",
+    "validator": "^13.6.0"
   }
 }
