@@ -3,6 +3,7 @@ import cors from "cors";
 import listEndpoints from "express-list-endpoints";
 import mongoose from "mongoose";
 import userRouter from "./user/index.js";
+import experiencesRouter from "./services/experience/experience.js"
 
 import {
   notFoundErrorHandler,
@@ -18,6 +19,10 @@ server.use(cors());
 server.use(express.json());
 
 server.use("/profile", userRouter);
+server.use("/profile", experiencesRouter)
+
+
+
 
 // ****************** ERROR HANDLERS ***********************
 server.use(badRequestErrorHandler);
