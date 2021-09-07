@@ -2,7 +2,7 @@ import express from "express";
 import createError from "http-errors";
 import multer from "multer";
 import json2csv from "json2csv";
-
+import { mediaStorage } from "../../utils/mediaStorage.js"
 import ExperienceModel from "./schema.js";
 import UserModel from "../user/schema.js";
 
@@ -90,6 +90,69 @@ experiencesRouter.get("/:userId/experiences/:expId", async (req, res, next) => {
         next(createError(500, "Error in getting single experience"))
     }
 })
+const uploadOnCloudinary = multer({ storage: mediaStorage }).single("experience")
+experiencesRouter.post("/:userId/experiences/:expId/picture", uploadOnCloudinary, async (req, res, next) => {
+    try {
+
+        const userId = req.params.userId
+        const experienceId = req.params.expId
+        const updateExperience = await UserModel.findOneAndUpdate({
+            _id: userId,
+            "experiences._id": experienceId
+        }, {
+            $set: {
+                "experiences.$.image": req.file.path
+            }
+        },
+            {
+                new: true
+            })
+
+        const updatedexperience = await UserModel.findById(req.params.userId, {
+            experiences: {
+                $elemMatch: { _id: req.params.expId }
+            },
+            _id: 0
+        })
+
+        if (updateExperience) {
+            res.send(updatedexperience.experiences[0])
+        }
+        else {
+            res.status(404).send(`experience with id: ${req.params.expId} not found`)
+        }
+    } catch (error) {
+        next(createError(500, "Error in uploading experience image"))
+    }
+})
+
+// experiencesRouter.post(
+//     "/:userId/experiences/:expId/picture",
+//     multer({ storage: mediaStorage }).single("image"),
+//     async (req, res, next) => {
+//         try {
+//             console.log("TRYING TO POST PROFILE PICTURE");
+//             const modifiedExperience = await ExperienceModel.findByIdAndUpdate(
+//                 req.params.expId,
+//                 { image: req.file.path },
+//                 {
+//                     new: true,
+//                 }
+//             );
+
+//             if (modifiedExperience) {
+//                 res.send(modifiedExperience);
+//             } else {
+//                 next(
+//                     createError(404, `Profile with id ${req.params.userId} not found!`)
+//                 );
+//             }
+//         } catch (error) {
+//             next(error);
+//         }
+//     }
+// );
+
 experiencesRouter.put("/:userId/experiences/:expId", async (req, res, next) => {
     try {
         const userId = req.params.userId
