@@ -21,9 +21,9 @@ export const getPDFReadableStream = async (user) => {
   const base64Image = `data:image/${extention};base64,${base64}`;
   const imagePart = { image: base64Image, width: 200 };
   
-  const userExperiences = user.experiences.map(e => `[${e.company}, {text: ${e.area}, alignment: 'right'}],
-  ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}],`)
-  console.log(userExperiences) 
+  const userExperiences = user.experiences.map(e => [e.company, {text: e.area, alignment: 'right'}],)
+  
+  console.log(userExperiences[0])  
 
   const docDefinition = {
     content: [
@@ -48,10 +48,7 @@ export const getPDFReadableStream = async (user) => {
               widths: ['*','*'],
                 body: [
                   [{text: '\nEDUCATION', style: 'subheader'}, {text: ''}],
-                  ['College #1', {text: 'Location', alignment: 'right'}],
-                  ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}],
-                  ['College #2', {text: 'Location', alignment: 'right'}],
-                  ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}]
+                  ['College #1 \n Your degree and your major', {text: 'Location \n Years Attended', alignment: 'right'}],
                 ]
               },
               layout: 'headerLineOnly'
@@ -62,7 +59,7 @@ export const getPDFReadableStream = async (user) => {
               widths: ['*','*'],
                 body: [
                   [{text: '\nEXPERIENCE', style: 'subheader'}, {text: ''}],
-                  // userExperiences // Cannot read property '_calcWidth' of undefined
+                  //userExperiences // Cannot read property '_calcWidth' of undefined
 
                   // ['College #1', {text: 'Location', alignment: 'right'}],
                   // ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}],
