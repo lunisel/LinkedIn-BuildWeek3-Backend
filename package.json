@@ -25,12 +25,14 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-list-endpoints": "^6.0.0",
+    "fs-extra": "^10.0.0",
     "http-errors": "^1.8.0",
     "json2csv": "^5.0.6",
     "mongoose": "^6.0.4",
     "multer": "^1.4.3",
     "multer-storage-cloudinary": "^4.0.0",
     "nodemon": "^2.0.12",
+    "pdfmake": "^0.2.2",
     "query-to-mongo": "^0.10.1",
     "validator": "^13.6.0"
   }
