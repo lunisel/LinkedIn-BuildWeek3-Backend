@@ -1,8 +1,9 @@
 import express from "express";
 import postModal from "./schema.js";
+import "../user/schema.js";
 import multer from "multer";
 import { mediaStorage } from "../../utils/mediaStorage.js";
-
+import userModal from "../user/schema.js";
 const postRouter = express.Router();
 
 postRouter.get("/", async (req, res, next) => {
@@ -13,12 +14,64 @@ postRouter.get("/", async (req, res, next) => {
     next(error);
   }
 });
+postRouter.get("/:postId", async (req, res, next) => {
+  try {
+    const getPosts = await postModal.findById(req.params.postId);
+
+    if (getPosts) {
+      res.status(201).send(getPosts);
+    } else {
+      res.status(404).send(`Post with the id ${req.params.postId} not found!`);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 postRouter.post("/", async (req, res, next) => {
   try {
-    const post = await postModal.create(req.body);
+    const searchUser = await userModal.findById(req.body.user);
 
-    res.send(post.text);
+    if (searchUser) {
+      const post = await postModal.create({
+        ...req.body,
+        username: searchUser.username,
+      });
+
+      res.send(post);
+    }
+
+    // res.send(post.text);
+  } catch (error) {
+    next(error);
+  }
+});
+
+postRouter.put("/:postId", async (req, res, next) => {
+  try {
+    const postModified = await postModal.findByIdAndUpdate(
+      req.params.postId,
+      req.body
+    );
+
+    if (postModified) {
+      res.status(201).send(postModified);
+    } else {
+      res.status(404).send(`Post with the id ${req.params.postId} not found!`);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+postRouter.delete("/:postId", async (req, res, next) => {
+  try {
+    const deletePost = await postModal.findByIdAndDelete(req.params.postId);
+    if (deletePost) {
+      res.status(201).send("Deleted!");
+    } else {
+      res.status(404).send(`Post with the id ${req.params.postId} not found!`);
+    }
   } catch (error) {
     next(error);
   }
