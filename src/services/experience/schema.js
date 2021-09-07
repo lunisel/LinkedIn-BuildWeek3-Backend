@@ -12,14 +12,14 @@ export const ExperienceSchema = new Schema(
       type: String,
       required: true,
     },
-    startDate: {
-      type: Date,
-      required: true,
-    },
-    endDate: {
-      type: Date,
-      required: false,
-    },
+    // startDate: {
+    //   type: Date,
+    //   required: false,
+    // },
+    // endDate: {
+    //   type: Date,
+    //   required: false,
+    // },
     description: {
       type: String,
       required: true,
