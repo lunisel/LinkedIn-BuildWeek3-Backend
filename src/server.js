@@ -8,9 +8,10 @@ import {
   badRequestErrorHandler,
   catchAllErrorHandler,
 } from "./errorMiddlewares.js";
+import experiencesRouter from "./services/experience/experience.js"
+import postRouter from "./services/Posts/index.js"
 
-import postRouter from "./services/Posts/index.js";
-import experiencesRouter from "./services/experience/experience.js";
+
 
 const port = process.env.PORT || 3000;
 const mongoConnection = process.env.MONGO_CONNECTION_STRING;
@@ -23,7 +24,6 @@ server.use(express.json());
 // ****************** ROUTES ***********************
 server.use("/profile", userRouter, experiencesRouter);
 server.use("/posts", postRouter);
-
 // ****************** ERROR HANDLERS ***********************
 server.use(badRequestErrorHandler);
 server.use(notFoundErrorHandler);
@@ -35,10 +35,10 @@ mongoose.connection.on("connected", () => {
   console.log("Successfully connected to mongo!");
   server.listen(port, () => {
     console.table(listEndpoints(server));
-    console.log("Server is running on port", port);
+    console.log("Server is running on port ", port);
   });
 });
 
 mongoose.connection.on("error", (err) => {
-  console.log("MONGO ERROR:", err);
+  console.log("MONGO ERROR: ", err);
 });
