@@ -102,7 +102,6 @@ experiencesRouter.put("/:userId/experiences/:expId", async (req, res, next) => {
             },
             _id: 0
         })
-
         const toUpdateExp = updateProfileExperience.experiences[0].toObject()
         console.log(toUpdateExp);
         const updateExperience = await UserModel.findOneAndUpdate({
@@ -117,9 +116,9 @@ experiencesRouter.put("/:userId/experiences/:expId", async (req, res, next) => {
         },
             {
                 new: true,
-                runValidators: true,
-            })
-
+                runValidators: true
+            }
+        )
         const updatedexperience = await UserModel.findById(req.params.userId, {
             experiences: {
                 $elemMatch: { _id: req.params.expId }
