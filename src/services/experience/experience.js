@@ -47,6 +47,30 @@ experiencesRouter.post("/:userId/experiences", async (req, res, next) => {
         next(createError(500, "Error in posting experience details"))
     }
 })
+experiencesRouter.get("/:userId/experiences/CSV", async (req, res, next) => {
+    // res.send('ok')
+    try {
+        const source = await UserModel.findById(req.params.userId)
+        console.log(source);
+        if (source) {
+            const jsonData = JSON.parse(JSON.stringify(source.experiences))
+            const fields = ["_id", "role", "company", "description", "area", "username", "startDate", "endDate"]
+            const options = { fields }
+            const json2csvParser = new Json2csvParser(options)
+            const csvData = json2csvParser.parse(jsonData)
+            res.setHeader("Content-Disposition", "attachment; filename = experiences.csv")
+            res.set("Content-Type", "text/csv")
+            res.status(200).end(csvData)
+        } else {
+            res.status(404).send("source not found")
+        }
+
+    } catch (error) {
+        next(createError(500, "Error in downloading CSV file"))
+        console.log(error);
+    }
+})
+
 experiencesRouter.get("/:userId/experiences/:expId", async (req, res, next) => {
     try {
         const experience = await UserModel.findById(req.params.userId, {
@@ -113,6 +137,7 @@ experiencesRouter.put("/:userId/experiences/:expId", async (req, res, next) => {
         next(createError(500, "Error in updating experience details"))
     }
 })
+
 experiencesRouter.delete("/:userId/experiences/:expId", async (req, res, next) => {
     try {
         const experienceToDelete = await UserModel.findById(req.params.userId, {
@@ -142,5 +167,9 @@ experiencesRouter.delete("/:userId/experiences/:expId", async (req, res, next) =
         next(createError(500, "Error in deleting experience details"))
     }
 })
+
+
+
+
 
 export default experiencesRouter;
