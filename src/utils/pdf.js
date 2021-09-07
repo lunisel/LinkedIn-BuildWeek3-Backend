@@ -19,79 +19,123 @@ export const getPDFReadableStream = async (user) => {
   const [id, extention] = fileName.split(".");
   const base64 = response.data.toString("base64");
   const base64Image = `data:image/${extention};base64,${base64}`;
-  const imagePart = { image: base64Image, width: 200 };
-  
-  const userExperiences = user.experiences.map(e => [e.company, {text: e.area, alignment: 'right'}],)
-  
-  console.log(userExperiences[0])  
+
+  const userExperiences = user.experiences.map((e) => e);
+
+  function convert(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
 
   const docDefinition = {
     content: [
-        { text: user.name + " " + user.surname, style: 'header' }, 
-        // 'Address.\n' + user.email + '.\n' + user.bio + '.\n\n',
-        {
+      { text: `Curriculum Vitae`, style: "header" },
+
+      // Horizontal Line
+      {
+        table: {
+          widths: ["*"],
+          body: [[" "], [" "]],
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0;
+          },
+          vLineWidth: function (i, node) {
+            return 0;
+          },
+        },
+      },
+
+      {
+        columns: [
+          {
+            width: "auto",
+            text: "Name:\nSurname:\nEmail:\nArea:\nBio:",
+            style: "subheader",
+          },
+          {
+            width: "auto",
+            text: `-------`,
+            style: "space",
+          },
+          {
+            width: "*",
+            text: ` ${user.name}\n ${user.surname}\n ${user.email}\n ${user.area}\n ${user.bio}`,
+            style: "text",
+          },
+          {
+            width: "150",
+            image: base64Image,
+          },
+        ],
+      },
+
+      { text: "EXPERIENCES", style: "smallHeader" },
+
+      // Horizontal Line
+      {
+        table: {
+          widths: ["*"],
+          body: [[" "], [" "]],
+        },
+        layout: {
+          hLineWidth: function (i, node) {
+            return i === 0;
+          },
+          vLineWidth: function (i, node) {
+            return 0;
+          },
+        },
+      },
+
+      userExperiences.map(function (exp) {
+        return {
           columns: [
             {
-              width: '*',
-              text: user.area + '\n' + user.email + '.\n' + user.title + '\n\n' + user.bio + '.\n\n',
-              style: 'subheader'
+              width: "auto",
+              text: "Role:\nCompany:\nStart Date:\nEnd Date:\nDescription:",
+              style: "subheader",
             },
             {
-              width: '200',
-              image: base64Image
-            }
-          ]
-        },
-            {
-              table: {
-              headerRows: 1,
-              widths: ['*','*'],
-                body: [
-                  [{text: '\nEDUCATION', style: 'subheader'}, {text: ''}],
-                  ['College #1 \n Your degree and your major', {text: 'Location \n Years Attended', alignment: 'right'}],
-                ]
-              },
-              layout: 'headerLineOnly'
+              width: "auto",
+              text: `-------`,
+              style: "space",
             },
-          {
-              table: {
-              headerRows: 1,
-              widths: ['*','*'],
-                body: [
-                  [{text: '\nEXPERIENCE', style: 'subheader'}, {text: ''}],
-                  //userExperiences // Cannot read property '_calcWidth' of undefined
+            {
+              width: "*",
+              text: ` ${exp.role}\n ${exp.company}\n ${convert(
+                exp.startDate
+              )}\n ${convert(exp.endDate)}\n ${exp.description}`,
+              style: "text",
+            },
+          ],
+          style: "marginCol",
+        };
+      }),
+    ],
 
-                  // ['College #1', {text: 'Location', alignment: 'right'}],
-                  // ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}],
-                  // ['College #2', {text: 'Location', alignment: 'right'}],
-                  // ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}]
-                ]
-              },
-              layout: 'headerLineOnly'
-            },
-          {
-              table: {
-              headerRows: 1,
-              widths: ['*','*'],
-                body: [
-                  [{text: '\nPROJECTS', style: 'subheader'}, {text: ''}],
-                  ['College #1', {text: 'Location', alignment: 'right'}],
-                  ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}],
-                  ['College #2', {text: 'Location', alignment: 'right'}],
-                  ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}]
-                ]
-              },
-              layout: 'headerLineOnly'
-            },
-      ],
-      styles: {
-        header: { fontSize: 26, bold: true },
-        subheader: { fontSize: 15, bold: true },
-        quote: { italics: true },
-        small: { fontSize: 8 },
-        superMargin: { margin: [20, 0, 40, 0] },
-      }	
-  }
+    styles: {
+      header: {
+        fontSize: 26,
+        bold: true,
+        alignment: "center",
+        margin: [0, 0, 0, 5],
+      },
+      subheader: { fontSize: 15, bold: true, lineHeight: 2 },
+      text: { fontSize: 15, bold: false, lineHeight: 2 },
+      space: { fontSize: 15, color: "white" },
+      smallHeader: {
+        fontSize: 16,
+        bold: true,
+        lineHeight: 2,
+        margin: [0, 20, 0, 0],
+      },
+      marginCol: { margin: [0, 0, 0, 30] },
+    },
+  };
 
   const pdfDoc = printer.createPdfKitDocument(docDefinition);
   pdfDoc.end();
