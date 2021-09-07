@@ -8,11 +8,8 @@ import {
   badRequestErrorHandler,
   catchAllErrorHandler,
 } from "./errorMiddlewares.js";
-import experiencesRouter from "./services/experience/experience.js";
+/* import experiencesRouter from "./services/experience/experience.js"; */
 import postRouter from "./services/Posts/index.js";
-
-import postRouter from "./services/Posts/index.js";
-import experiencesRouter from "./services/experience/experience.js";
 // import experiencesRouter from "./services/experience/test.js";
 
 const port = process.env.PORT || 3000;
@@ -24,7 +21,7 @@ server.use(cors());
 server.use(express.json());
 
 // ****************** ROUTES ***********************
-server.use("/profile", userRouter, experiencesRouter);
+server.use("/profile", userRouter /* experiencesRouter */);
 server.use("/posts", postRouter);
 // ****************** ERROR HANDLERS ***********************
 server.use(badRequestErrorHandler);
