@@ -23,19 +23,130 @@ export const getPDFReadableStream = async (user) => {
 
   const docDefinition = {
     content: [
-      imagePart,
-      { text: user.name + " " + user.surname, style: "header" },
-      { text: user.email, style: "subheader" },
-      { text: user.bio, style: "small" },
-    ],
-    styles: {
-      header: { fontSize: 18, bold: true },
-      subheader: { fontSize: 15, bold: true },
-      small: { fontSize: 8 },
-    },
-  };
+        // { text: user.name + " " + user.surname, style: 'header' }, 
+        // 'Address.\n' + user.email + '.\n' + user.bio + '.\n\n',
+        {
+          columns: [
+            {
+              width: '*',
+              text: user.name + " " + user.surname + '\n' + user.email + '.\n' + user.bio + '.\n\n', 
+              style: 'header'
+            },
+            {
+              width: '200',
+              image: base64Image
+            }
+          ]
+        },
+            {
+              table: {
+              headerRows: 1,
+              widths: ['*','*'],
+                body: [
+                  [{text: '\nEDUCATION', style: 'subheader'}, {text: ''}],
+                  ['College #1', {text: 'Location', alignment: 'right'}],
+                  ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}],
+                  ['College #2', {text: 'Location', alignment: 'right'}],
+                  ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}]
+                ]
+              },
+              layout: 'headerLineOnly'
+            },
+          {
+              table: {
+              headerRows: 1,
+              widths: ['*','*'],
+                body: [
+                  [{text: '\nEXPERIENCE', style: 'subheader'}, {text: ''}],
+                  ['College #1', {text: 'Location', alignment: 'right'}],
+                  ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}],
+                  ['College #2', {text: 'Location', alignment: 'right'}],
+                  ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}]
+                ]
+              },
+              layout: 'headerLineOnly'
+            },
+          {
+              table: {
+              headerRows: 1,
+              widths: ['*','*'],
+                body: [
+                  [{text: '\nPROJECTS', style: 'subheader'}, {text: ''}],
+                  ['College #1', {text: 'Location', alignment: 'right'}],
+                  ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}],
+                  ['College #2', {text: 'Location', alignment: 'right'}],
+                  ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}]
+                ]
+              },
+              layout: 'headerLineOnly'
+            },
+      ],
+      styles: {
+        header: { fontSize: 26, bold: true },
+        subheader: { fontSize: 15, bold: true },
+        quote: { italics: true },
+        small: { fontSize: 8 },
+        superMargin: { margin: [20, 0, 40, 0] },
+      }	
+  }
 
   const pdfDoc = printer.createPdfKitDocument(docDefinition);
   pdfDoc.end();
   return pdfDoc;
 };
+
+// content: [
+// imagePart,
+//   { text: user.name + " " + user.surname, style: 'header' },
+//   'Address.\n' + user.email + '.\n' + user.bio + '.\n\n',
+//       {
+//         table: {
+//         headerRows: 1,
+//         widths: ['*','*'],
+//           body: [
+//             [{text: '\nEDUCATION', style: 'subheader'}, {text: ''}],
+//             ['College #1', {text: 'Location', alignment: 'right'}],
+//             ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}],
+//             ['College #2', {text: 'Location', alignment: 'right'}],
+//             ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}]
+//           ]
+//         },
+//         layout: 'headerLineOnly'
+//       },
+//     {
+//         table: {
+//         headerRows: 1,
+//         widths: ['*','*'],
+//           body: [
+//             [{text: '\nEXPERIENCE', style: 'subheader'}, {text: ''}],
+//             ['College #1', {text: 'Location', alignment: 'right'}],
+//             ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}],
+//             ['College #2', {text: 'Location', alignment: 'right'}],
+//             ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}]
+//           ]
+//         },
+//         layout: 'headerLineOnly'
+//       },
+//     {
+//         table: {
+//         headerRows: 1,
+//         widths: ['*','*'],
+//           body: [
+//             [{text: '\nPROJECTS', style: 'subheader'}, {text: ''}],
+//             ['College #1', {text: 'Location', alignment: 'right'}],
+//             ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}],
+//             ['College #2', {text: 'Location', alignment: 'right'}],
+//             ['Your degree and your major', {text: 'Years Attended', alignment: 'right'}]
+//           ]
+//         },
+//         layout: 'headerLineOnly'
+//       },
+// ],
+// styles: {
+//   header: { fontSize: 26, bold: true },
+//   subheader: { fontSize: 15, bold: true },
+//   quote: { italics: true },
+//   small: { fontSize: 8 },
+//   superMargin: { margin: [20, 0, 40, 0] },
+// }	
+// }
