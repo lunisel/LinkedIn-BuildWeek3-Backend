@@ -11,40 +11,45 @@ const Json2csvParser = json2csv.Parser;
 const experiencesRouter = express.Router();
 
 experiencesRouter
-  .route("/:userId/experiences")
-  .get(async (req, res, next) => {
-    try {
-      const profile = await UserModel.findById(req.params.userId).populate(
-        "username"
-      );
-      if (profile) {
-        res.send(profile);
-      } else {
-        next(
-          createError(404, `Profile with id: ${req.params.userId} not found`)
-        );
-      }
-    } catch (error) {
-      next(createError(500, "Error in getting experiences"));
-    }
-  })
-  .post(async (req, res, next) => {
-    try {
-      const newExperience = new ExperienceModel({
-        ...req.body,
-        updatedAt: new Date(),
-        createdAt: new Date(),
-      });
-      const updatedExperience = await UserModel.findByIdAndUpdate(
-        req.params.userId,
-        {
-          $push: {
-            experiences: newExperience,
-          },
-        },
-        {
-          new: true,
-          runValidators: true,
+    .route("/:userId/experiences")
+    .get(async (req, res, next) => {
+        try {
+            const profile = await UserModel.findById(req.params.userId).populate(
+                "username"
+            );
+            if (profile) {
+                res.send(profile);
+            } else {
+                next(
+                    createError(404, `Profile with id: ${req.params.userId} not found`)
+                );
+            }
+        } catch (error) {
+            next(createError(500, "Error in getting experiences"));
+        }
+    })
+    .post(async (req, res, next) => {
+        try {
+            const newExperience = new ExperienceModel({
+                ...req.body,
+                updatedAt: new Date(),
+                createdAt: new Date(),
+            });
+            const updatedExperience = await UserModel.findByIdAndUpdate(
+                req.params.userId,
+                {
+                    $push: {
+                        experiences: newExperience,
+                    },
+                },
+                {
+                    new: true,
+                    runValidators: true,
+                })
+        } catch (error) {
+            next(error);
+        }
+    })
     .route("/:userId/experiences")
     .get(async (req, res, next) => {
         // try {
