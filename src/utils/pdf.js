@@ -96,7 +96,7 @@ export const getPDFReadableStream = async (user) => {
           columns: [
             {
               width: "auto",
-              text: "Role:\nCompany:\nStart Date:\nEnd Date:\nDescription:",
+              text: "Role:\nCompany:\nArea:\nStart Date:\nEnd Date:\nDescription:",
               style: "subheader",
             },
             {
@@ -106,7 +106,7 @@ export const getPDFReadableStream = async (user) => {
             },
             {
               width: "*",
-              text: ` ${exp.role}\n ${exp.company}\n ${convert(
+              text: ` ${exp.role}\n ${exp.company}\n${exp.area}\n ${convert(
                 exp.startDate
               )}\n ${convert(exp.endDate)}\n ${exp.description}`,
               style: "text",
