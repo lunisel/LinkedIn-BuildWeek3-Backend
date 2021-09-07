@@ -1,6 +1,5 @@
 import PdfPrinter from "pdfmake";
-import fs from "fs-extra";
-import { Buffer } from "buffer";
+import axios from "axios";
 
 const fonts = {
   Roboto: {
@@ -11,17 +10,21 @@ const fonts = {
   },
 };
 
-function base64_encode(file) {
-  var bitmap = fs.readFileSync(file);
-  return new Buffer(bitmap).toString("base64");
-}
-
 const printer = new PdfPrinter(fonts);
 
-export const getPDFReadableStream = (user) => {
+export const getPDFReadableStream = async (user) => {
+  const response = await axios.get(user.image, { responseType: "arraybuffer" });
+  const imageUrl = user.image.split("/");
+  const fileName = imageUrl[imageUrl.length - 1];
+  const [id, extention] = fileName.split(".");
+  const base64 = response.data.toString("base64");
+  console.log("Response ------->", response);
+  const base64Image = `data:image/${extention};base64,${base64}`;
+  const imagePart = { image: base64Image, width: 500 };
+
   const docDefinition = {
     content: [
-      /* { image: `${base64_encode(user.image)}` }, */
+      imagePart,
       { text: user.name + " " + user.surname, style: "header" },
       { text: user.email, style: "subheader" },
       { text: user.bio, style: "small" },
@@ -32,11 +35,7 @@ export const getPDFReadableStream = (user) => {
       small: { fontSize: 8 },
     },
   };
-  const options = {};
-  const pdfReadableStream = printer.createPdfKitDocument(
-    docDefinition,
-    options
-  );
-  pdfReadableStream.end();
-  return pdfReadableStream;
+
+  const pdfDoc = printer.createPdfKitDocument(docDefinition);
+  return pdfDoc;
 };

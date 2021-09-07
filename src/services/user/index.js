@@ -100,18 +100,16 @@ userRouter.post(
 );
 
 userRouter.get("/:id/CV", async (req, res, next) => {
-    try {
-      const user = await UserModel.findById(req.params.id);
-      const filename = "CV.pdf"
-      res.setHeader("Content-Disposition", `attachment; filename=${filename}`) // tells browser to open SAVE-AS dialogue
-      const source = getPDFReadableStream(user) 
-      const destination = res
-      pipeline(source, destination, err => {
-        if (err) next(err)
-      })
-    } catch (error) {
-        next(error)
-    }
-})
+  try {
+    const user = await UserModel.findById(req.params.id);
+    const filename = "CV.pdf";
+    const pdfStream = await getPDFReadableStream(user);
+    res.setHeader("Content-Type", "application/pdf");
+    pdfStream.pipeline(res);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
 
 export default userRouter;
