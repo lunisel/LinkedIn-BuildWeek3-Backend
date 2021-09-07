@@ -105,7 +105,9 @@ userRouter.get("/:id/CV", async (req, res, next) => {
     const filename = "CV.pdf";
     const pdfStream = await getPDFReadableStream(user);
     res.setHeader("Content-Type", "application/pdf");
-    pdfStream.pipeline(res);
+    pipeline(pdfStream, res, (err) => {
+      if (err) next(err);
+    });
   } catch (error) {
     console.log(error);
     next(error);

@@ -18,9 +18,8 @@ export const getPDFReadableStream = async (user) => {
   const fileName = imageUrl[imageUrl.length - 1];
   const [id, extention] = fileName.split(".");
   const base64 = response.data.toString("base64");
-  console.log("Response ------->", response);
   const base64Image = `data:image/${extention};base64,${base64}`;
-  const imagePart = { image: base64Image, width: 500 };
+  const imagePart = { image: base64Image, width: 200 };
 
   const docDefinition = {
     content: [
@@ -37,5 +36,6 @@ export const getPDFReadableStream = async (user) => {
   };
 
   const pdfDoc = printer.createPdfKitDocument(docDefinition);
+  pdfDoc.end();
   return pdfDoc;
 };
