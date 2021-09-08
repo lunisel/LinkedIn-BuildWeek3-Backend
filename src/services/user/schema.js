@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import pkg from "validator";
-import { ExperienceSchema } from "../experience/schema.js"
+import { ExperienceSchema } from "../experience/testschema.js"
+
 const { isEmail } = pkg;
 
 const { Schema, model } = mongoose;
@@ -24,7 +25,8 @@ const userSchema = new Schema(
       default: `https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png`,
     },
     username: { type: String, required: true },
-    experiences: [ExperienceSchema]
+    experiences: { default: [], type: [ExperienceSchema] },
+    // experiences: [ExperienceSchema]
   },
   {
     timestamps: true,

@@ -51,9 +51,12 @@ postRouter.put("/:postId", async (req, res, next) => {
   try {
     const postModified = await postModal.findByIdAndUpdate(
       req.params.postId,
-      req.body
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
     );
-
     if (postModified) {
       res.status(201).send(postModified);
     } else {
