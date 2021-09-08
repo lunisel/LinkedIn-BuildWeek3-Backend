@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import pkg from "validator";
-import { ExperienceSchema } from "../experience/testschema.js"
+import { ExperienceSchema } from "../experience/schema.js";
 
 const { isEmail } = pkg;
 

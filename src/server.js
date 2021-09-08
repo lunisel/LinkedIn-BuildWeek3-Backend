@@ -3,14 +3,13 @@ import cors from "cors";
 import listEndpoints from "express-list-endpoints";
 import mongoose from "mongoose";
 import userRouter from "./services/user/index.js";
-/* import experiencesRouter from "./services/experience/testexperience.js"; */
+import experiencesRouter from "./services/experience/experience.js";
 import postRouter from "./services/Posts/index.js";
 import {
   notFoundErrorHandler,
   badRequestErrorHandler,
   catchAllErrorHandler,
 } from "./errorMiddlewares.js";
-import testRouter from "./services/experience/testexperience.js";
 
 const port = process.env.PORT || 3000;
 const mongoConnection = process.env.MONGO_CONNECTION_STRING;
@@ -21,7 +20,7 @@ server.use(cors());
 server.use(express.json());
 
 // ****************** ROUTES ***********************
-server.use("/profile", userRouter, testRouter);
+server.use("/profile", userRouter, experiencesRouter);
 server.use("/posts", postRouter);
 // ****************** ERROR HANDLERS ***********************
 server.use(badRequestErrorHandler);
