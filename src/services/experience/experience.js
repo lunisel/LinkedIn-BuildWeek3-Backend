@@ -14,7 +14,7 @@ experiencesRouter.get("/:userId/experiences", async (req, res, next) => {
     try {
         const profile = await UserModel.findById(req.params.userId)
         if (profile) {
-            res.send(profile);
+            res.send(profile.experiences);
         } else {
             next(
                 createError(404, `Profile with id: ${req.params.userId} not found`)

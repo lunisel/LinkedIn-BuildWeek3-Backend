@@ -6,6 +6,8 @@ import userRouter from "./services/user/index.js";
 import logginRouter from "./services/Loggin/loggin.js";
 import experiencesRouter from "./services/experience/experience.js";
 import postRouter from "./services/Posts/index.js";
+import SignInRouter from "./services/SignedIn/index.js";
+
 import {
   notFoundErrorHandler,
   badRequestErrorHandler,
@@ -24,6 +26,7 @@ server.use(express.json());
 server.use("/profile", userRouter, experiencesRouter);
 server.use("/posts", postRouter);
 server.use("/loggin", logginRouter);
+server.use("/signin", SignInRouter);
 // ****************** ERROR HANDLERS ***********************
 server.use(badRequestErrorHandler);
 server.use(notFoundErrorHandler);
