@@ -23,7 +23,7 @@ SignInRouter.post("/", async (req, res, next) => {
           if (deletedOldLogin) {
               const newLogin = new SignInModal(req.body);
               const { _id } = await newLogin.save();  
-              res.status(201).send({ _id });
+              res.status(201).send("UPDATED!");
           } else {
             res.status(404).send(`PROBLEMS DELETING OLD SIGN IN INFO, CHECK DATABASE`);
           }
