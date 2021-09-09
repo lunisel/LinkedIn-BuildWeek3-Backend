@@ -3,6 +3,7 @@ import cors from "cors";
 import listEndpoints from "express-list-endpoints";
 import mongoose from "mongoose";
 import userRouter from "./services/user/index.js";
+import logginRouter from "./services/Loggin/loggin.js";
 import experiencesRouter from "./services/experience/experience.js";
 import postRouter from "./services/Posts/index.js";
 import {
@@ -22,6 +23,7 @@ server.use(express.json());
 // ****************** ROUTES ***********************
 server.use("/profile", userRouter, experiencesRouter);
 server.use("/posts", postRouter);
+server.use("/loggin", logginRouter);
 // ****************** ERROR HANDLERS ***********************
 server.use(badRequestErrorHandler);
 server.use(notFoundErrorHandler);
