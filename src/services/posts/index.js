@@ -37,12 +37,14 @@ postRouter.post("/", async (req, res, next) => {
         ...req.body,
         username: searchUser.username,
       });
+      const { _id } = await post.save();
 
-      res.send(post);
+      res.send({ _id });
     }
 
     // res.send(post.text);
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });
