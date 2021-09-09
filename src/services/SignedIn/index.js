@@ -7,28 +7,32 @@ const SignInRouter = express.Router();
 SignInRouter.get("/", async (req, res, next) => {
     try {
       const login = await SignInModal.find()
-      res.send(login[0].identifier);
+      console.log(login[0].identifier.toString())
+      res.send(login[0].identifier.toString());
     } catch (error) {
       next(error);
     }
 });
 
-SignInRouter.post("/", async (req, res, next) => {
+SignInRouter.post("/", async (req, res, next) => { 
     try {
       const oldLogin = await SignInModal.find()
-      if (oldLogin) {
+      console.log(oldLogin)
+      if (oldLogin.length>0) {
           const oldLoginId = oldLogin[0]._id 
           console.log(oldLoginId)
           const deletedOldLogin = await SignInModal.findByIdAndDelete(oldLoginId)
           if (deletedOldLogin) {
               const newLogin = new SignInModal(req.body);
               const { _id } = await newLogin.save();  
-              res.status(201).send("UPDATED!");
+              res.status(201).send({"UPDATED ==> NEW ID": _id});
           } else {
-            res.status(404).send(`PROBLEMS DELETING OLD SIGN IN INFO, CHECK DATABASE`);
+              res.status(404).send(`PROBLEMS DELETING OLD SIGN IN INFO, CHECK DATABASE`);
           }
       } else {
-        res.status(404).send(`NO DATA FOUND FOR SIGNINMODAL, CHECK DATABASE`);
+        const newLogin = new SignInModal(req.body);
+        const { _id } = await newLogin.save();  
+        res.status(201).send({"CREATED ==> ID": _id});
       }
     } catch (err) {
       next(err);

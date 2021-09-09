@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import pkg from "validator";
 import { ExperienceSchema } from "../experience/schema.js";
+import { EducationSchema } from "../education/schema.js";
 
 const { isEmail } = pkg;
 
@@ -26,9 +27,9 @@ const userSchema = new Schema(
     },
     username: { type: String, required: true },
     experiences: { default: [], type: [ExperienceSchema] },
+    education: { default: [], type: [EducationSchema] },
     // experiences: [ExperienceSchema]
   },
-
   {
     timestamps: true,
   }

@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import userRouter from "./services/user/index.js";
 import logginRouter from "./services/Loggin/loggin.js";
 import experiencesRouter from "./services/experience/experience.js";
+import educationRouter from "./services/education/education.js";
 import postRouter from "./services/Posts/index.js";
 import SignInRouter from "./services/SignedIn/index.js";
 
@@ -23,7 +24,7 @@ server.use(cors());
 server.use(express.json());
 
 // ****************** ROUTES ***********************
-server.use("/profile", userRouter, experiencesRouter);
+server.use("/profile", userRouter, experiencesRouter, educationRouter);
 server.use("/posts", postRouter);
 server.use("/loggin", logginRouter);
 server.use("/signin", SignInRouter);
