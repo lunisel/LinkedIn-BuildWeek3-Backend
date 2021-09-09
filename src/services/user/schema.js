@@ -28,6 +28,7 @@ const userSchema = new Schema(
     experiences: { default: [], type: [ExperienceSchema] },
     // experiences: [ExperienceSchema]
   },
+
   {
     timestamps: true,
   }
