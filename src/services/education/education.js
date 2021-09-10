@@ -87,7 +87,7 @@ educationRouter.post("/:userId/education/:eduId/picture", uploadOnCloudinary, as
 
         const updatededucation = await UserModel.findById(req.params.userId, {
             education: {
-                $elemMatch: { _id: req.params.eduId }
+                $elemMatch: { _id: req.params.eduId } 
             },
             _id: 0
         })
