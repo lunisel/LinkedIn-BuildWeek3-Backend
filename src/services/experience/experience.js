@@ -26,6 +26,7 @@ experiencesRouter.get("/:userId/experiences", async (req, res, next) => {
 })
 experiencesRouter.post("/:userId/experiences", async (req, res, next) => {
     try {
+        console.log(req.body)
         const newExperience = new ExperienceModel({ ...req.body, updatedAt: new Date(), createdAt: new Date() })
         const updatedExperience = await UserModel.findByIdAndUpdate(req.params.userId, {
             $push: {
@@ -44,6 +45,7 @@ experiencesRouter.post("/:userId/experiences", async (req, res, next) => {
             res.status(404).send(`profile with userid: ${req.params.userId} not found`)
         }
     } catch (error) {
+        console.log(error)
         next(createError(500, "Error in posting experience details"))
     }
 })

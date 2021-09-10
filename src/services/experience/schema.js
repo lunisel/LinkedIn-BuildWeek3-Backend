@@ -33,7 +33,7 @@ export const ExperienceSchema = new Schema({
   },
   image: {
     type: String,
-    required: true,
+    required: false,
     default:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Facebook_icon.svg/1200px-Facebook_icon.svg.png",
   },

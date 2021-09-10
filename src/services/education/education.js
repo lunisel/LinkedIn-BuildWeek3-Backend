@@ -99,6 +99,7 @@ educationRouter.post("/:userId/education/:eduId/picture", uploadOnCloudinary, as
             res.status(404).send(`education with id: ${req.params.eduId} not found`)
         }
     } catch (error) {
+        
         next(createError(500, "Error in uploading education image"))
     }
 })

@@ -21,10 +21,10 @@ const mongoConnection = process.env.MONGO_CONNECTION_STRING;
 const server = express();
 
 server.use(cors());
-server.use(express.json());
+server.use(express.json()); 
 
 // ****************** ROUTES ***********************
-server.use("/profile", userRouter, experiencesRouter, educationRouter);
+server.use("/profile", userRouter, experiencesRouter, educationRouter)
 server.use("/posts", postRouter);
 server.use("/loggin", logginRouter);
 server.use("/signin", SignInRouter);
